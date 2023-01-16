@@ -104,7 +104,7 @@ class table {
 };
 
 // not sure if all the characters in this string are accepted in passwords
-const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()-.?[]_`~;:@#$%^&*+=";
+const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()?[]_`~;:@#$%^&*+=-.";
 const size_t Range = Alphabet.length();
 
 int GetValue(string Type) {
@@ -126,30 +126,25 @@ string Randomize(string String) {
 	return Randomized;
 };
 
-string RandomString(int Quantity) {
-	string Chars = Randomize(Alphabet);
+string RandomString(int Quantity, bool Password) {
 	string String(Quantity, '\0');
 	
 	char *c{&String[0]},*e{&String[Quantity]};
-	while (c != e) *c++ = Chars[rand()%Range];
+	if (Password) *c++ = Randomize(Alphabet)[rand()%(Range - 2)];
+	while (c != e) *c++ = Randomize(Alphabet)[rand()%Range];
 	
 	return String;
 };
 
 
 
-int main() {
+int main() {		
 	srand(time(0));	// Seed random generator from time_t *0
 	
 	std::cout << "Accepted input range: {6, 100}\n\n";
 	int Length = GetValue("Length of each Password");
-	int Quantity = GetValue("Quantity of Passwords") + 1;
+	int Quantity = GetValue("Quantity of Passwords");
 	
-	for (int i{1}; i != Quantity; i++) {
-		string Password = RandomString(Length);
-		while (Password[0] == '-' || Password[0] == '.')
-		{	Password[0] = Alphabet[rand()%Range];	};
-		std::cout << "\nPassword " << i << ":\t" << Password;
-	};
+	for (int i{0}; i++ != Quantity; std::cout << "\nPassword " << i << ":\t" << RandomString(Length, true)); 
 	return 0;
 };
