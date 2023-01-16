@@ -35,8 +35,8 @@ class table {
 			if (Array != nullptr) {
 				delete [] Array;
 				Array = nullptr;
+				Size = int();
 			}
-			Size = int();
 		};
 		
 		int getn() const 
