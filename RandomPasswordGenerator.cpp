@@ -7,7 +7,6 @@
 
 using std::cout;
 using std::string;
-using std::vector;
 
 template<typename TYPE>
 class table {
@@ -64,10 +63,10 @@ class table {
 			return LinearArray;
 		};
 		
-		vector<TYPE> Random(int Quantity) {
+		std::vector<TYPE> Random(int Quantity) {
 			assert(ValidateQuantity(Quantity));
 			table<TYPE> LinearArray = LinearTable(Quantity);	// Destructor implicitely deallocates this table
-			vector<TYPE> Seq(Quantity);
+			std::vector<TYPE> Seq(Quantity);
 			for (TYPE *i{&Seq[0]},*e{&Seq.back()}; i <= e; *i++ = LinearArray.remove(rand()%LinearArray.getn()));
 			return Seq;
 		};
