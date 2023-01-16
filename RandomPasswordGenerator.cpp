@@ -1,11 +1,9 @@
 
 #include <iostream>
 #include <time.h>
-#include <string.h>
 #include <assert.h>
 #include <vector>
 
-using std::cout;
 using std::string;
 
 template<typename TYPE>
@@ -99,10 +97,6 @@ class table {
 			assert(ValidateIndex(Index));
 			return Array[Index];
 		};
-		
-		void out() const {
-			for (int i = -1; i++ < Size - 1; cout << Array[i] << ", ");
-		}
 };
 
 // not sure if all the characters in this string are accepted in passwords
@@ -112,7 +106,7 @@ const size_t Length = Alphabet.length();
 int GetValue(string Type) {
 	int Value = 5;
 	while (Value < 6 || Value > 100) {
-		cout << "Enter the " << Type << ": ";
+		std::cout << "Enter the " << Type << ": ";
 		std::cin >> Value;
 	};
 	return Value;
@@ -143,11 +137,11 @@ string RandomString(int Quantity) {
 int main() {
 	srand(time(0));	// Seed random generator from time_t *0
 	
-	cout << "Accepted input range: {6, 100}\n\n";
+	std::cout << "Accepted input range: {6, 100}\n\n";
 	int Length = GetValue("Length of each Password");
 	int Quantity = GetValue("Quantity of Passwords");
 	
-	for (int i{0}; i++ != Quantity; cout << "\nPassword " << i << ":\t" << RandomString(Length));
+	for (int i{0}; i++ != Quantity; std::cout << "\nPassword " << i << ":\t" << RandomString(Length));
 	
 	return 0;
 };
