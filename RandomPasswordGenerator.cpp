@@ -41,7 +41,7 @@ class table {
 		table(int Quantity, bool Linear = true) : Size(Quantity) {
 			assert(Quantity >= 0);
 			Array = new TYPE[Quantity--];
-			if (Linear) {
+			if (Linear == true) {
 				int *idx{Array};
 				for (int i{-1}; i++ < Quantity; *idx++ = i);
 			};
@@ -57,9 +57,9 @@ class table {
 		{	return Size;	};
 		
 		std::vector<TYPE> RandomSequence(int Quantity) const {
-			table<TYPE> LinearArray(Quantity, true);	// Destructor implicitely deallocates this table
+			table<TYPE> LinearArray(Quantity);	// Destructor implicitely deallocates this table
 			std::vector<TYPE> Seq(Quantity);
-			for (auto i{Seq.begin()}; i != Seq.end(); *i++ = LinearArray.remove(rand()%LinearArray.getn()));
+			for (TYPE &n : Seq) n = LinearArray.remove(rand()%LinearArray.getn());
 			return Seq;
 		};
 };
@@ -89,12 +89,12 @@ string Randomize(string String) {
 bool CheckInvalidStart(char c)
 {	return c == '-' || c == '.';	}
 
-string RandomString(int Length, bool Password) {
+string Password(int Length) {
 	string Chars = Randomize(Alphabet);
 	string Random(Length, '\0');
 	
 	for (char &c : Random) c = Chars[rand()%Range];
-	if (Password && CheckInvalidStart(Random[0])) Random[0] = Alphabet[rand()%(Range - 2)];
+	if (CheckInvalidStart(Random[0])) Random[0] = Alphabet[rand()%(Range - 2)];
 	
 	return Random;
 };
@@ -103,11 +103,11 @@ string RandomString(int Length, bool Password) {
 int main() {		
 	srand(time(0));	// Seed random generator from time_t *0
 	
-	cout << "Accepted input range: {6, 100}\n\n";
+	std::cout << "Accepted input range: {6, 100}\n\n";
 	int Length = GetValue("Length of each Password");
 	int Quantity = GetValue("Quantity of Passwords");
 	
-	for (int i{0}; i++ != Quantity; std::cout << "\nPassword " << i << ":\t" << RandomString(Length)); 
+	for (int i{0}; i++ != Quantity; std::cout << "\nPassword " << i << ":\t" << Password(Length)); 
 	while (true); // dead loop
 	return 0;
 };
