@@ -9,101 +9,62 @@ using std::string;
 template<typename TYPE>
 class table {
 	private:
-		bool ValidateIndex(int Index) const {
-			return (Index >= 0 && Index < Size);
-		};
-		
-		bool ValidateQuantity(int Quantity) const {
-			return (Quantity >= 0);
-		};
-	
-	public:
 		TYPE *Array = nullptr;
 		int Size = int();	// empty integer = 0
-	
-		table(int Quantity) : Size(Quantity) {
-			assert(ValidateQuantity(Quantity));
-			Array = new TYPE[Quantity]();
+		
+		void insert(TYPE VAR) {
+			TYPE *OldArray = Array;
+			Array = new TYPE[++Size];
+			
+			int *i{Array},*ii{OldArray},*e{&Array[Size-1]};
+			while (i != e) *i++ = *ii++;
+			*i = VAR;
+			
+			delete [] OldArray;
+			OldArray = nullptr;
 		};
-		table(int Quantity, TYPE VAR) : Size(Quantity) { // similar to table.create(Size, Value)
-			assert(ValidateQuantity(Quantity));
-			Array = new TYPE[Quantity];
-			for (int Index = -1; Index++ != (Size - 1); Array[Index] = VAR);
+		
+		TYPE remove(int Index) {
+			TYPE *OldArray = Array;
+			Array = new TYPE[--Size];
+			TYPE ReturnVal;
+			
+			int *idx{Array},*oidx{OldArray};
+			for (int i{-1}; i++ < Size; (i != Index) ? *idx++ = *oidx++ : ReturnVal = *oidx++);
+			
+			delete [] OldArray;
+			OldArray = nullptr;
+			return ReturnVal;
+		};
+	
+	public:	
+		table(int Quantity, bool Linear = true) : Size(Quantity) {
+			assert(Quantity >= 0);
+			Array = new TYPE[Quantity--];
+			if (Linear) {
+				int *idx{Array};
+				for (int i{-1}; i++ < Quantity; *idx++ = i);
+			};
 		};
 		
 		~table() {	
-			if (Array != nullptr) {
-				delete [] Array;
-				Array = nullptr;
-				Size = int();
-			}
+			delete [] Array;
+			Array = nullptr;
+			Size = int();
 		};
 		
 		int getn() const 
 		{	return Size;	};
 		
-		void insert(TYPE VAR) {
-			auto OldArray = Array;
-			Array = new TYPE[Size + 1];
-			
-			int *i{&Array[0]},*ii{&OldArray[0]},*e{&Array[Size]};
-			while (i != e) { *i++ = *i++; };
-			Array[Size++] = VAR;
-			
-			delete [] OldArray;
-			OldArray = nullptr;
-		};
-		
-		table<TYPE> LinearTable(int Quantity) {
-			assert(ValidateQuantity(Quantity));
-			table<TYPE> LinearArray(Quantity);
-			for (int i{-1},e{Quantity - 1}; i++ < e; LinearArray.set(i, i));
-			return LinearArray;
-		};
-		
-		std::vector<TYPE> Random(int Quantity) {
-			assert(ValidateQuantity(Quantity));
-			table<TYPE> LinearArray = LinearTable(Quantity);	// Destructor implicitely deallocates this table
+		std::vector<TYPE> RandomSequence(int Quantity) const {
+			table<TYPE> LinearArray(Quantity, true);	// Destructor implicitely deallocates this table
 			std::vector<TYPE> Seq(Quantity);
-			for (TYPE *i{&Seq[0]},*e{&Seq.back()}; i <= e; *i++ = LinearArray.remove(rand()%LinearArray.getn()));
+			for (auto i{Seq.begin()}; i != Seq.end(); *i++ = LinearArray.remove(rand()%LinearArray.getn()));
 			return Seq;
 		};
-		
-		TYPE remove(int Index) {
-			assert(ValidateIndex(Index));
-			auto OldArray = Array;
-			Array = new TYPE[--Size];
-			
-			int *idx = &Array[0];
-			for (int i = 0; i <= Size; i++) {
-				if (i != Index) {
-					*idx++ = OldArray[i];
-				};
-			};
-			
-			TYPE ReturnVal = OldArray[Index];
-			delete [] OldArray;
-			OldArray = nullptr;
-			return ReturnVal;
-			
-		};
-		
-		void set(int Index, TYPE VAL) {
-			assert(ValidateIndex(Index));
-			Array[Index] = VAL;
-		};
-		
-		TYPE operator[](int Index) const {
-			assert(ValidateIndex(Index));
-			return Array[Index];
-		};
-		
-		void out() const {
-			for (int i = -1; i++ < Size - 1; std::cout << Array[i] << ", ");
-		}
 };
 
-// not sure if all the characters in this string are accepted in passwords
+const table<int> Global(0, false);
 const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()?[]_`~;:@#$%^&*+=-.";
 const size_t Range = Alphabet.length();
 
@@ -117,34 +78,36 @@ int GetValue(string Type) {
 };
 
 string Randomize(string String) {
-	table<int> Array(String.length());
-	string Randomized(Array.getn(), '\0');
+	string Random(String.size(), '\0');
 	
-	char *c = &Randomized[0];
-	for (int Index : Array.Random(Array.getn())) *c++ = String[Index];
+	string::iterator c = Random.begin();
+	for (int i : Global.RandomSequence(String.size())) *c++ = String[i];
 	 
-	return Randomized;
+	return Random;
 };
 
-string RandomString(int Quantity, bool Password) {
-	string String(Quantity, '\0');
-	
-	char *c{&String[0]},*e{&String[Quantity]};
-	if (Password) *c++ = Randomize(Alphabet)[rand()%(Range - 2)];
-	while (c != e) *c++ = Randomize(Alphabet)[rand()%Range];
-	
-	return String;
-};
+bool CheckInvalidStart(char c)
+{	return c == '-' || c == '.';	}
 
+string RandomString(int Length, bool Password) {
+	string Chars = Randomize(Alphabet);
+	string Random(Length, '\0');
+	
+	for (char &c : Random) c = Chars[rand()%Range];
+	if (Password && CheckInvalidStart(Random[0])) Random[0] = Alphabet[rand()%(Range - 2)];
+	
+	return Random;
+};
 
 
 int main() {		
 	srand(time(0));	// Seed random generator from time_t *0
 	
-	std::cout << "Accepted input range: {6, 100}\n\n";
+	cout << "Accepted input range: {6, 100}\n\n";
 	int Length = GetValue("Length of each Password");
 	int Quantity = GetValue("Quantity of Passwords");
 	
-	for (int i{0}; i++ != Quantity; std::cout << "\nPassword " << i << ":\t" << RandomString(Length, true)); 
+	for (int i{0}; i++ != Quantity; std::cout << "\nPassword " << i << ":\t" << RandomString(Length)); 
+	while (true); // dead loop
 	return 0;
 };
