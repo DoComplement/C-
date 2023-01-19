@@ -78,7 +78,7 @@ int GetValue(string Type) {
 };
 
 string Randomize(string String) {
-	string Random(String.size(), '\0');
+	string Random(String.size(), char());
 	
 	string::iterator c = Random.begin();
 	for (int i : Global.RandomSequence(String.size())) *c++ = String[i];
@@ -91,7 +91,7 @@ bool CheckInvalidStart(char c)
 
 string Password(int Length) {
 	string Chars = Randomize(Alphabet);
-	string Random(Length, '\0');
+	string Random(Length, char());
 	
 	for (char &c : Random) c = Chars[rand()%Range];
 	if (CheckInvalidStart(Random[0])) Random[0] = Alphabet[rand()%(Range - 2)];
