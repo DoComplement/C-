@@ -60,17 +60,7 @@ class table {
 };
 
 const table Global();
-const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()?[]_`~;:@#$%^&*+=-.";
-const size_t Range = Alphabet.length();
-
-int GetValue(string Type) {
-	int Value = 5;
-	while (Value < 6 || Value > 100) {
-		std::cout << "Enter the " << Type << ": ";
-		std::cin >> Value;
-	};
-	return Value;
-};
+const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()?[]_`~;:@#$%^&*+=-."; // 84 characters
 
 string Randomize(string String) {
 	string Random(String.size(), char());
@@ -81,19 +71,21 @@ string Randomize(string String) {
 	return Random;
 };
 
-bool CheckInvalidStart(char c)
-{	return c == '-' || c == '.';	}
-
 string Password(int Length) {
-	string Chars = Randomize(Alphabet);
-	string Random(Length, char());
-	
-	for (char &c : Random) c = Chars[rand()%Range];
-	if (CheckInvalidStart(Random[0])) Random[0] = Alphabet[rand()%(Range - 2)];
-	
+	string Chars = Randomize(Alphabet),Random(Length, char{});
+	for(char &c : Random) c = Chars[rand()%84];
+	*Random.begin() = Alphabet[rand()%82]; // force valid starting character
 	return Random;
 };
 
+int GetValue(string Type) {
+	int Value = 5;
+	while (Value < 6 || Value > 100) {
+		std::cout << "Enter the " << Type << ": ";
+		std::cin >> Value;
+	};
+	return Value;
+};
 
 int main() {		
 	srand(time(0));	// Seed random generator from time_t *0
