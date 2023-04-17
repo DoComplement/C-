@@ -11,42 +11,42 @@ struct node{ // struct for easy access
 	node(const size_t &val = 0) : key(val){}
 };
 
-class linked_list{
+class linked_list{ // not a practical linked list implementation
 	private:
 		std::shared_ptr<node> head = std::make_shared<node>(); // shared_pointer for easy deallocation
-		
-	public:
-		linked_list(size_t len){
-			auto temp{head}; // fill linked_list as a linear array
-			for(size_t idx{}; ++idx < len; temp = temp->next) temp->next = std::make_shared<node>(idx);
-			temp = nullptr;
-		}
-		
-		~linked_list(){head = nullptr;}
+		size_t len{};
 		
 		size_t remove(size_t idx){
 			if(!idx){ // idx == 0
-				size_t retVal{head->idx};
+				size_t retVal{head->key};
 				head = head->next;
 				return retVal;
 			}
 			auto temp{head};
 			for(size_t key{}; ++key != idx; temp = temp->next); // traverse like an array
 			
-			size_t retVal{temp->next->idx}; // get return value of idx-node
+			size_t retVal{temp->next->key}; // get return value of idx-node
 			temp->next = temp->next->next; // deallocate middle node
 			temp = nullptr; // deallocate hanging pointer (idk if this happens implicitely)
 			
 			return retVal;
 		}
+	
+	public:
+		linked_list(size_t size) : len(size){
+			auto temp{head}; // fill linked_list as a linear array
+			for(size_t idx{}; ++idx < size; temp = temp->next) temp->next = std::make_shared<node>(idx);
+			temp = nullptr;
+		}
+		
+		~linked_list(){head = nullptr;}
+	
+		std::forward_list<size_t> randSeq(){
+			std::forward_list<size_t> seq(len);
+			for(size_t &key : seq) key = remove(rand()%len--); // removes the node and returns the val at the node
+			return seq; // random sequence
+		}
 };
-
-std::forward_list<size_t> randSeq(size_t len){
-	linked_list linSeq(len); // linear sequence
-	std::forward_list<size_t> seq(len);
-	for(size_t &key : seq) key = linSeq.remove(rand()%len--); // removes the node and returns the val at the node
-	return seq; // random sequence
-}
 
 // the alphabet follows guidelines for characters allowed in general passwords
 const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()?[]_`~;:@#$%^&*+=-."; // 84 chars
@@ -54,7 +54,7 @@ const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012
 string randAlphabet(){
 	string temp(Alphabet);
 	string::iterator c{temp.end()};
-	for(size_t idx : randSeq(84)) *c-- = Alphabet[idx];
+	for(size_t idx : linked_list(84).randSeq()) *c-- = Alphabet[idx];
 	return temp;
 }
 
