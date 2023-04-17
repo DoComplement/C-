@@ -65,20 +65,20 @@ string password(size_t len){
 	return pass;
 }
 
+template<typename TYPE> 
+TYPE getVal(string cast, TYPE temp = TYPE{}){
+	while(temp<=0){
+		std::cout << cast;
+		std::cin >> temp;
+	};
+	return temp;
+}
+
 int main(){
 	srand(time(0));
 	
-	int num{};
-	while(num<=0){
-		std::cout << "Enter a positive quantity of passwords to generate: ";
-		std::cin >> num;
-	};
-	
-	size_t len{};
-	while(len<=0){
-		std::cout << "Enter a positive length for each password: ";
-		std::cin >> len;
-	};
+	int num{getVal<int>("(positive) Quantity of passwords to generate: ")};
+	size_t len{getVal<size_t>("(positive) Length of each password: ")};
 	
 	for(int i{0}; i != num; std::cout << "\nPassword " << ++i << ":\t" << password(len));
 	// while(1); // keeps the terminal open from an executable file call
