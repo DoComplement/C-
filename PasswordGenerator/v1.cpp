@@ -6,15 +6,14 @@
 
 using std::string;
 
-template<typename TYPE>
 class table {
 	private:
-		TYPE *Array = nullptr;
-		int Size = int();	// empty integer = 0
+		size_t *Array{nullptr};
+		size_t Size{};
 		
-		void insert(TYPE VAR) {
-			TYPE *OldArray = Array;
-			Array = new TYPE[++Size];
+		void insert(size_t VAR) {
+			size_t *OldArray = Array;
+			Array = new size_t[++Size];
 			
 			int *i{Array},*ii{OldArray},*e{&Array[Size-1]};
 			while (i != e) *i++ = *ii++;
@@ -24,13 +23,13 @@ class table {
 			OldArray = nullptr;
 		};
 		
-		TYPE remove(int Index) {
-			TYPE *OldArray = Array;
-			Array = new TYPE[--Size];
-			TYPE ReturnVal;
+		size_t remove(int IDX) {
+			size_t retVal{Array[IDX]}
+			size_t *OldArray{Array};
+			Array = new size_t[--Size];
 			
 			int *idx{Array},*oidx{OldArray};
-			for (int i{-1}; i++ < Size; (i != Index) ? *idx++ = *oidx++ : ReturnVal = *oidx++);
+			for(int i{}; i < Size; ++i) if(i!=IDX) *idx++ = *oidx++;
 			
 			delete [] OldArray;
 			OldArray = nullptr;
@@ -38,33 +37,29 @@ class table {
 		};
 	
 	public:	
-		table(int Quantity, bool Linear = true) : Size(Quantity) {
-			assert(Quantity >= 0);
-			Array = new TYPE[Quantity--];
-			if (Linear == true) {
-				int *idx{Array};
-				for (int i{-1}; i++ < Quantity; *idx++ = i);
-			};
-		};
+		table(size_t len = 0) : Size(len) {
+			if(len){
+				Array = new size_t[len--];
+				size_t *idx{Array};
+				for (size_t i{}; i < len; *idx++ = i++);
+			}
+		}
 		
 		~table() {	
 			delete [] Array;
 			Array = nullptr;
 			Size = int();
-		};
+		}
 		
-		int getn() const 
-		{	return Size;	};
-		
-		std::vector<TYPE> RandomSequence(int Quantity) const {
-			table<TYPE> LinearArray(Quantity);	// Destructor implicitely deallocates this table
-			std::vector<TYPE> Seq(Quantity);
-			for (TYPE &n : Seq) n = LinearArray.remove(rand()%LinearArray.getn());
+		std::vector<size_t> RandomSequence(size_t len) const {
+			table<size_t> LinearArray(len);	// Destructor implicitely deallocates this table
+			std::vector<size_t> Seq(len);
+			for (size_t &n : Seq) n = LinearArray.remove(rand()%len--);
 			return Seq;
 		};
 };
 
-const table<int> Global(0, false);
+const table Global();
 const string Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()?[]_`~;:@#$%^&*+=-.";
 const size_t Range = Alphabet.length();
 
