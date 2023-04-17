@@ -61,7 +61,7 @@ string randAlphabet(){
 string password(size_t len){
 	string pass(len,char{}),ABCs{randAlphabet()};
 	for(char &c : pass) c = ABCs[rand()%84];
-    *pass.begin() = Alphabet[rand()%82]; // forces valid starting character
+    pass[0] = Alphabet[rand()%82]; // forces valid starting character
 	return pass;
 }
 
