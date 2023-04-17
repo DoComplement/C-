@@ -74,7 +74,7 @@ string Randomize(string String) {
 string Password(int Length) {
 	string Chars = Randomize(Alphabet),Random(Length, char{});
 	for(char &c : Random) c = Chars[rand()%84];
-	*Random.begin() = Alphabet[rand()%82]; // force valid starting character
+	Random[0] = Alphabet[rand()%82]; // force valid starting character
 	return Random;
 };
 
