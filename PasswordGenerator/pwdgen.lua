@@ -6,20 +6,20 @@
 local alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!()?[]_`~;:@#$%^&*+=-."
 local ra = ''
 
-for i,v in ipairs(permutation(84))do
-    ra = ra .. string.sub(alphabet, v, v)
-end
-
 local function permutation(len)
     local t,x = {},{}
     for i = 1,len do
-        t[i] = [i]
+        t[i] = i
     end
     for i = 1,len do
         x[i] = table.remove(t, math.random(#t))
     end
 
     return x
+end
+
+for i,v in ipairs(permutation(84))do
+    ra = ra .. string.sub(alphabet, v, v)
 end
 
 local function password(len)
@@ -30,12 +30,12 @@ local function password(len)
         pass = pass .. string.sub(ra, i,i)
     end
 
-    return pass
+    print(pass)
 end
 
 local size,quantity = tonumber(arg[1]),tonumber(arg[2])
-assert(size > 0 and quantiy > 0)
+assert(size > 0 and quantity > 0, 'invalid dimensions')
 
 for _=1,quantity do
-    print(password(size))
+    password(size)
 end
