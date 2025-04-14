@@ -17,6 +17,7 @@ _math: adds some useful math functions to the lua math library:
 
 
 numeric: adds c++ numerical methods functions, std::numeric
+  
   all indices (i,j,k) can be negative to indicate starting-n from the end of a table:
     (indices are per example of logic in the functions) t : {1,2,3,4,5}, t[-2 ->] = {4,5},  t[-3,-2] = {3,4}
 
