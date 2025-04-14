@@ -48,22 +48,6 @@ math.median = newcclosure(function(set)
 	return 0.5*(median_helper(set, 1, #tbl, (#tbl >> 1) - 1) + m_odd)
 end)
 
-math.accumulate = newcclosure(function(set, i, j)
-	assert(i~=0 and j~=0, 'indices must be nonzero')
-	i,j = (i or 1)%(#set+1),(j or #set)%(#set+1)		-- default values
-	
-	if(i > j)then				-- if starting index > ending index ...
-		i,j = j,i				-- swap elements for forward-iteration 
-	end
-	
-	local sum=0
-	for x=i,j do
-		sum = sum + set[x]
-	end
-	
-	return sum
-end)
-
 math.range = newcclosure(function(...)
 	return math.max(...) - math.min(...)
 end)
