@@ -14,7 +14,12 @@ _math: adds some useful math functions to the lua math library:
    - math.var({} : table)   (calculates the variance of the set)
    - math.std({} : table)   (calculates the standard deviation of the set)
 
+
+
 numeric: adds c++ numerical methods functions, std::numeric
+  all indices (i,j,k) can be negative to indicate starting-n from the end of a table:
+    (indices are per example of logic in the functions) t : {1,2,3,4,5}, t[-2 ->] = {4,5},  t[-3,-2] = {3,4}
+
    - numeric.accumulate({} : table, i : int, j : int)  (calculates the sum of of numbers within the range (i,j), numbers can be negative to indicate starting from the back of the table)
    - numeric.adjacent_difference({} : table, i : int, j : int, k : int, {} : table)  (computes adjacent difference of elements in the first table within the range of indices i->j (default: 1, #first_table) and stores them in the second table starting from index k)
    - numeric.inner_product({} : table, i : int, j : int, k : int, {} : table)  (computes the cumulative inner product of the elements in the first table between the range of i->j (defaults: 1,#first_table) with the elements in the second table from the index k)
