@@ -49,18 +49,8 @@ math.median = newcclosure(function(set)
 end)
 
 math.accumulate = newcclosure(function(set, i, j)
-	i,j = i or 1,j or #set		-- default values
-
-	assert(i <= #set, 'invalid starting index')
-	assert(j <= #set, 'invalid starting index')
-	
-	if(i < 0)then
-		i = i%#set + 1			-- start from back of set
-	end
-	
-	if(j < 0)then
-		j = j%#set + 1			-- end from back of set
-	end
+	assert(i~=0 and j~=0, 'indices must be nonzero')
+	i,j = (i or 1)%(#set+1),(j or #set)%(#set+1)		-- default values
 	
 	if(i > j)then				-- if starting index > ending index ...
 		i,j = j,i				-- swap elements for forward-iteration 
