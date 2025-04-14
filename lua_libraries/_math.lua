@@ -50,7 +50,9 @@ end)
 
 math.accumulate = newcclosure(function(set, i, j)
 	i,j = i or 1,j or #set		-- default values
-	
+
+	assert(i <= #set, 'invalid starting index')
+	assert(j <= #set, 'invalid starting index')
 	
 	if(i < 0)then
 		i = i%#set + 1			-- start from back of set
