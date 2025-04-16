@@ -48,12 +48,12 @@ newcclosure(function): simply creates a c-closure of the input function
 local b = bitset()
 `
 - b.set(idx : int, val : int)    (will set the idx-th bit to be val, val can be any number, but will only set the bit to be 1 or 0 depending on val&1 or val%2 (odd -> 1, even -> 0))
-- nil <- b.reset(idx : int)       (will reset (set to 0) the idx-th bit to be 0)
-- nil <- b.flip(idx : int)        (will flip the value (1->0, 0->1) of the idx-th bit)
-- bool <- b.test(idx : int)        (returns true/false depending if the bit is high/low (1/0))
-- bool <- b.any()        (returns true if any bits are high in the bitset)
-- bool <- b.all()        (return true if all bits in the bitset are high)
-- bool <- b.none()        (returns true if none of the bits in the bitset are high)
-- int <- b.count()        (returns the quantity of set (1) bits in the bitset)
-- int <- b.size()        (returns the total quantitiy of bits in the bitset (#ints*word_size))
-- string <- b.tostring()    (returns a string representing the binary form of the bitset)
+- nil <- **b.reset(idx : int)**       *(will reset (set to 0) the idx-th bit to be 0)*
+- nil <- **b.flip(idx : int)**        *(will flip the value (1->0, 0->1) of the idx-th bit)*
+- bool <- **b.test(idx : int)**        *(returns true/false depending if the bit is high/low (1/0))*
+- bool <- **b.any()**        *(returns true if any bits are high in the bitset)*
+- bool <- **b.all()**        *(return true if all bits in the bitset are high)*
+- bool <- **b.none()**        *(returns true if none of the bits in the bitset are high)*
+- int <- **b.count()**        *(returns the quantity of set (1) bits in the bitset)*
+- int <- **b.size()**        *(returns the total quantitiy of bits in the bitset (#ints x word_size))*
+- string <- **b.tostring()**    *(returns a string representing the binary form of the bitset)*
