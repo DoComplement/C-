@@ -48,8 +48,12 @@ math.median = newcclosure(function(set)
 	return 0.5*(median_helper(set, 1, #tbl, (#tbl >> 1) - 1) + m_odd)
 end)
 
-math.range = newcclosure(function(...)
-	return math.max(...) - math.min(...)
+math.mean = newcclosure(function(set)
+	local sum = 0
+	for i,v in ipairs(set)do
+		sum = sum + v
+	end
+	return sum/#set 
 end)
 
 math.mode = newcclosure(function(set)
@@ -66,6 +70,10 @@ math.mode = newcclosure(function(set)
 	if mf > 1 then
 		return n
 	end
+end)
+
+math.range = newcclosure(function(...)
+	return math.max(...) - math.min(...)
 end)
 
 math.imax = newcclosure(function(set)
