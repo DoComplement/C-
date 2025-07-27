@@ -14,6 +14,34 @@ newcclosure(function): simply creates a c-closure of the input function
    - math.var({} : table)   (calculates the variance of the set)
    - math.std({} : table)   (calculates the standard deviation of the set)
 
+## lrgb (luargb): adds some useful rgb calculation and conversion functions:
+   - lrgb.rgb2lum(r : int, g : int, b : int) : int, (calculates gamma-corrected rgb-luminance)
+   - lrgb.rgb2hex(r : int, g : int, b : int) : string (converts rgb to hex)
+   - lrgb.hex2rgb(s : string) : tuple(r : int, g : int, b : int)  (converts hex to rgb)
+   - lrgb.rgb2hsv(r : int, g : int, b : int) : tuple(h : int, s : int, v : int)  (converts rgb to hsv (hue, saturation, brightness))
+   - lrgb.hsv2rgb(h : int, s : int, v : int) tuple(r : int, g : int, b : int) (converts hsv to rgb)
+   - lrgb.rgb2cmyk(r : int, g : int, b : int) tuple(c : int, m : int, y : int, k : int)  (converts rgb to cmyk)
+   - lrgb.cmyk2rgb(c : int, m : int, y : int, k : int) tuple(r : int, g : int, b : int)  (converts cmyk to rgb)
+   - lrgb.rgb2hsl(r : int, g : int, b : int) : tuple(h : int, s : int, l : int)  (converts rgb to hsl (hue, saturation, lightness))
+   - lrgb.hsl2rgb(h : int, s : int, l : int) tuple(r : int, g : int, b : int) (converts hsl to rgb)
+
+     doesn't include extra conversion functions (hsl to cmyk, cmyk to hex, etc.) because they are simple enough (1 or 2 lines of code) that they can be done personally with the provided functions.
+     The lrgb library also doesn't currently include a color sorting algorithm, but such algorithm would simply be as follows:
+
+  example with rgb:
+  local function sort_by_rgb(rgb1, rgb2)  -- rgb color tables {r = r, g = g, b = b}
+    if (rgb1.r ~= rgb2.r) then
+      return rgb1.r < rgb2.r
+    elseif (rgb1.f ~= rgb2.g) then 
+      ...
+  end
+  lrgb.sortRGB = newcclosure(function(colors)
+    -- setup temp table made up of colors prior if not wanting to change colors
+    -- local temp = table.move(colors, 1, #colors, 1, {}) <- crude overview, don't actually do this
+    table.sort(colors --[[ or temp ]], sort_by_rgb)
+    -- return temp
+  end)
+
 
 
 ## numeric: adds c++ numerical methods functions, std::numeric
