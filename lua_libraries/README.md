@@ -26,7 +26,7 @@ newcclosure(function): simply creates a c-closure of the input function
    - lrgb.hsl2rgb(h : int, s : int, l : int) tuple(r : int, g : int, b : int) (converts hsl to rgb)
 
      doesn't include extra conversion functions (hsl to cmyk, cmyk to hex, etc.) because they are simple enough (1 or 2 lines of code) that they can be done personally with the provided functions.
-     The lrgb library also doesn't currently include a color sorting algorithm, but such algorithm would simply be as follows:
+     The lrgb library also doesn't currently include a color sorting algorithm, but such algorithm would simply be as follows: (the standard is sorting by hsl btw)
 
   example with rgb:       
   local function sort_by_rgb(rgb1, rgb2)  -- rgb color tables {r = r, g = g, b = b}      
