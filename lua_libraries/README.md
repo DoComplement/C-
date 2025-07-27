@@ -2,7 +2,7 @@ Some lua libraries..
 
 newcclosure(function): simply creates a c-closure of the input function
 
-## _math: adds some useful math functions to the lua math library:
+## lmath (luamath): adds some useful math functions to the lua math library:
 
   these functions can easily be updated to operate over a range of elements inside the 
   argument array, but the majority of cases are not necessary for that operation
