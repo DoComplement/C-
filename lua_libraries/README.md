@@ -28,21 +28,21 @@ newcclosure(function): simply creates a c-closure of the input function
      doesn't include extra conversion functions (hsl to cmyk, cmyk to hex, etc.) because they are simple enough (1 or 2 lines of code) that they can be done personally with the provided functions.
      The lrgb library also doesn't currently include a color sorting algorithm, but such algorithm would simply be as follows:
 
-  example with rgb:
-  local function sort_by_rgb(rgb1, rgb2)  -- rgb color tables {r = r, g = g, b = b}
-    if (rgb1.r ~= rgb2.r) then
-      return rgb1.r < rgb2.r
-    elseif (rgb1.f ~= rgb2.g) then 
-      ...
-  end
-  lrgb.sortRGB = newcclosure(function(colors)
-    -- setup temp table made up of colors prior if not wanting to change colors
-    -- local temp = table.move(colors, 1, #colors, 1, {}) <- crude overview, don't actually do this
-    table.sort(colors --[[ or temp ]], sort_by_rgb)
-    -- return temp
-  end)
+  example with rgb:       
+  local function sort_by_rgb(rgb1, rgb2)  -- rgb color tables {r = r, g = g, b = b}      
+    if (rgb1.r ~= rgb2.r) then      
+      return rgb1.r < rgb2.r      
+    elseif (rgb1.f ~= rgb2.g) then       
+      ...      
+  end      
+  lrgb.sortRGB = newcclosure(function(colors)      
+    -- setup temp table made up of colors prior if not wanting to change colors      
+    -- local temp = table.move(colors, 1, #colors, 1, {}) <- crude overview, don't actually do this      
+    table.sort(colors --[[ temp ]], sort_by_rgb)      
+    -- return temp      
+  end)      
 
-
+      
 
 ## numeric: adds c++ numerical methods functions, std::numeric
   
