@@ -12,6 +12,9 @@ lrgb.rgb2lum = newcclosure(function(r,g,b)
 	return math.pow((0.299 * r + 0.587 * g + 0.114 * b), 1/2.2)
 end)
 
+lrgb.rgbcomp = newcclosure(function(r,g,b)
+	return 255 - r, 255 - g, 255 - b
+end)
 
 -------------------------- HEX FUNCTIONS --------------------------
 
@@ -24,7 +27,14 @@ end)
 lrgb.hex2rgb = newcclosure(function(hex)
 	local num = tonumber(string.match(hex, "%d+"), 16)
 	
-	return (num >> 16), (mum >> 8)&255, num&255
+	return (num >> 16), (num >> 8)&255, num&255
+end)
+
+-- rgbhex complement
+lrgb.hexcomp = newcclosure(function(hex)
+	local r,g,b = lrgb.hex2rgb(hex)
+	
+	return lrgb.rgb2hex(255 - r, 255 - g, 255 - b)
 end)
 
 
@@ -79,7 +89,11 @@ lrgb.hsv2rgb = newcclosure(function(h,s,v)
 	return (R + m)*255, (G + m)*255, (B + m)*255
 end)
 
-
+lrgb.hsvcomp = newcclosure(function(h,s,v) 
+	local r,g,b = lrgb.hsv2rgb(h,s,v)
+	
+	return lrgb.rgb2hsv(255 - r, 255 - g, 255 - b)
+end)
 
 -------------------------- CMYK FUNCTIONS --------------------------
 
@@ -102,7 +116,11 @@ lrgb.cmyk2rgb = newcclosure(function(c,m,y,k)
 	return r,g,b
 end)
 
+lrgb.cmykcomp = newcclosure(function(c,m,y,k)
+	local r,g,b = lrgb.cmyk2rgb(c,m,y,k)
 
+	return lrgb.rgb2cmyk(255 - r, 255 - g, 255 - b)
+end)
 
 -------------------------- HSL FUNCTIONS --------------------------
 
@@ -155,6 +173,11 @@ lrgb.hsl2rgb = newcclosure(function(h,s,l)
 	return (R + m)*255, (G + m)*255, (B + m)*255
 end)
 
+lrgb.hslcomp = newcclosure(function(h, s, l)
+	local r,g,b = lrgb.hsl2rgb(h, s, l)
+	
+	return lrgb.rgb2hsl(255 - r, 255 - g, 255 - b)
+end)
 
 -------------------------- EXTRA CONVERSION FUNCTIONS --------------------------
 
